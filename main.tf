@@ -9,3 +9,11 @@ terraform {
         }
     }
 }
+
+# registry.terraform.io/providers/hashicorp/aws/latest/docs 참고
+provider "aws" {}
+
+# aws vpc 생성
+resource "aws_vpc" "demo-vpc" {
+    cidr_block = "10.0.0.0/16"
+}
