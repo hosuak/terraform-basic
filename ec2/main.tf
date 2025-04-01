@@ -24,13 +24,13 @@ module "demo_vpc" {
 }
 
 resource "aws_security_group" "demo_sg" {
-    name = "demo-sg"
+    name = var.security_group_name
     description = "demo-sg"
     vpc_id = module.demo_vpc.vpc_id
 
     ingress {
-        from_port = 22
-        to_port = 22
+        from_port = var.ingress_port
+        to_port = var.ingress_port
         protocol = "tcp"
         cidr_blocks = ["0.0.0.0/0"]
     }
@@ -46,13 +46,13 @@ resource "aws_security_group" "demo_sg" {
 module "demo_key_pair" {
   source = "terraform-aws-modules/key-pair/aws"
   version = "2.0.2"
-  key_name = "demo-key-pair"
+  key_name = var.key_pair_name
   create_private_key = true
 }
 
 resource "aws_instance" "demo_instance" {
   ami = data.aws_ami.ubuntu.id
-  instance_type = "t3.micro"
+  instance_type = var.instance_type
 
   subnet_id = module.demo_vpc.public_subnets[0]
   associate_public_ip_address = true
@@ -61,9 +61,9 @@ resource "aws_instance" "demo_instance" {
   vpc_security_group_ids = [aws_security_group.demo_sg.id]
 
   root_block_device {
-    volume_type = "gp2"
+    volume_type = var.root_block_device_volume_type
     # volume 사이즈는 줄일 수 없음.
-    volume_size = 10
+    volume_size = var.root_block_device_volume_size
   }
 }
 
