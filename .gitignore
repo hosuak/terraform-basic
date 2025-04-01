@@ -38,3 +38,7 @@ terraform.rc
 
 # Ignore terraform locks
 .terraform.lock.hcl
+
+# pem key
+key
+*.pem
